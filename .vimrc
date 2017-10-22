@@ -18,6 +18,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'google/vim-jsonnet'
 Plug 'tpope/vim-rhubarb'
 Plug 'mileszs/ack.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 
 call plug#end()
 
