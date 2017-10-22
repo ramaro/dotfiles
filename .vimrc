@@ -15,7 +15,6 @@ Plug 'google/vim-jsonnet'
 Plug 'tpope/vim-rhubarb'
 Plug 'mileszs/ack.vim'
 
-
 call plug#end()
 
 
@@ -72,11 +71,16 @@ filetype indent on
 
 " set highlight search
 set hlsearch
+" highlight when typing
+set incsearch
+
+" show options in menu
+set wildmenu
 
 " map leader key to Space
 let mapleader = "\<Space>"
 
-nnoremap <Leader>a :Ack<CR>
+nnoremap <Leader>a :Ack 
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>b :Buffers<CR>
@@ -84,8 +88,8 @@ nnoremap <Leader>t :Tags<CR>
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
 nnoremap <Leader>p :b#<CR>
+nnoremap <Leader>r :reg<CR>
 nnoremap <Leader>n :set number!<CR>
-
 
 " vim-lightline
 set laststatus=2
