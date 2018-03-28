@@ -35,6 +35,7 @@ set colorcolumn=80
 
 " color scheme type
 syntax enable
+" let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
 
@@ -90,7 +91,8 @@ nnoremap <Leader>a :Ack
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>t :Tags<CR>
+nnoremap <Leader>T :Tags<CR>
+nnoremap <Leader>t :tabs<CR>
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
 nnoremap <Leader>p :b#<CR>
@@ -99,3 +101,12 @@ nnoremap <Leader>n :set number!<CR>
 
 " vim-lightline
 set laststatus=2
+
+" set j2 files as yaml syntax
+au BufRead,BufNewFile *.yaml,*.yml set filetype=yaml
+au BufRead,BufNewFile *.j2 set filetype=yaml
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+" setting for .jsonnet and .libjsonnet syntax
+au BufRead,BufNewFile *.jsonnet,*.libjsonnet set filetype=jsonnet syntax=jsonnet
+autocmd FileType jsonnet setlocal ts=2 sts=2 sw=2 expandtab
