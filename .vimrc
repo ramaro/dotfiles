@@ -7,12 +7,13 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'itchyny/lightline.vim'
 Plug 'altercation/vim-colors-solarized'
+" Plug 'fenetikm/falcon'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'fatih/vim-go'
-Plug 'lambdalisue/vim-pyenv'
+" Plug 'lambdalisue/vim-pyenv'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'google/vim-jsonnet'
@@ -21,6 +22,8 @@ Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
+Plug 'nvie/vim-flake8'
+Plug 'MattesGroeger/vim-bookmarks'
 
 call plug#end()
 
@@ -31,12 +34,16 @@ set gfn=Monaco:h14
 " Syntax highligting
 syn on
 
-" 80 char line
-set colorcolumn=80
+" Show whitespace/invisible chars
+set list
+
+" 120 char line
+set colorcolumn=120
+highlight ColorColumn ctermbg=10
 
 " color scheme type
 syntax enable
-" let g:solarized_termcolors=256
+let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
 
@@ -85,6 +92,9 @@ set incsearch
 " show options in menu
 set wildmenu
 
+" enable mouse support
+set mouse=a
+
 " map leader key to Space
 let mapleader = "\<Space>"
 
@@ -92,13 +102,13 @@ nnoremap <Leader>a :Ack
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>T :Tags<CR>
-nnoremap <Leader>t :tabs<CR>
+nnoremap <Leader>t :terminal<CR>
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
 nnoremap <Leader>p :b#<CR>
 nnoremap <Leader>r :reg<CR>
 nnoremap <Leader>n :set number!<CR>
+nnoremap <Leader>m :BookmarkShowAll<CR>
 
 " vim-lightline
 set laststatus=2
