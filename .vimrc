@@ -24,6 +24,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'nvie/vim-flake8'
 Plug 'MattesGroeger/vim-bookmarks'
+Plug 'thaerkh/vim-workspace'
+Plug 'nathanaelkane/vim-indent-guides'
 
 call plug#end()
 
@@ -46,6 +48,15 @@ syntax enable
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
+
+" enable vim-workspace's autosave
+let g:workspace_autosave_always = 1
+
+" enable vim-indent-guides
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_autocolors = 0
+hi IndentGuidesOdd ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
 
 " show line numbers
 set number
@@ -109,6 +120,8 @@ nnoremap <Leader>p :b#<CR>
 nnoremap <Leader>r :reg<CR>
 nnoremap <Leader>n :set number!<CR>
 nnoremap <Leader>m :BookmarkShowAll<CR>
+nnoremap <Leader>s :ToggleWorkspace<CR>
+nnoremap <Leader>g :IndentGuidesToggle<CR>
 
 " vim-lightline
 set laststatus=2
