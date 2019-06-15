@@ -24,7 +24,6 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'nvie/vim-flake8'
 Plug 'MattesGroeger/vim-bookmarks'
-Plug 'thaerkh/vim-workspace'
 Plug 'nathanaelkane/vim-indent-guides'
 
 call plug#end()
