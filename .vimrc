@@ -25,12 +25,10 @@ Plug 'tpope/vim-sensible'
 Plug 'nvie/vim-flake8'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'tpope/vim-dispatch'
+Plug 'szw/vim-tags'
 
 call plug#end()
-
-
-" set for for MacVim
-set gfn=Monaco:h14
 
 " Syntax highligting
 syn on
@@ -56,6 +54,10 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_autocolors = 0
 hi IndentGuidesOdd ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
+
+" set ctags autogenerate
+let g:vim_tags_auto_generate = 1
+let g:vim_tags_use_vim_dispatch = 1
 
 " show line numbers
 set number
