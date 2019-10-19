@@ -114,6 +114,7 @@ nnoremap <Leader>a :Ack
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>T :Tags<CR>
 nnoremap <Leader>t :terminal<CR>
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
