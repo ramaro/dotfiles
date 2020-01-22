@@ -109,6 +109,8 @@ set mouse=a
 
 " map leader key to Space
 let mapleader = "\<Space>"
+" wait indefinitely for leader command
+set notimeout nottimeout
 
 nnoremap <Leader>a :Ack 
 nnoremap <Leader>f :Files<CR>
