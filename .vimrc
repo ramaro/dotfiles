@@ -7,13 +7,11 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'itchyny/lightline.vim'
 Plug 'altercation/vim-colors-solarized'
-" Plug 'fenetikm/falcon'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'fatih/vim-go'
-" Plug 'lambdalisue/vim-pyenv'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'google/vim-jsonnet'
@@ -27,6 +25,8 @@ Plug 'MattesGroeger/vim-bookmarks'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-dispatch'
 Plug 'szw/vim-tags'
+Plug 'leafgarland/typescript-vim'
+Plug 'reedes/vim-colors-pencil'
 
 call plug#end()
 
@@ -40,11 +40,16 @@ set list
 set colorcolumn=120
 highlight ColorColumn ctermbg=10
 
-" color scheme type
+" color scheme type and settings
 syntax enable
 let g:solarized_termcolors=256
-set background=dark
-colorscheme solarized
+let g:pencil_higher_contrast_ui = 1
+let g:pencil_terminal_italics = 1
+let g:airline_theme = 'pencil'
+
+set background=light
+" colorscheme solarized
+colorscheme pencil
 
 " enable vim-workspace's autosave
 let g:workspace_autosave_always = 1
@@ -129,6 +134,7 @@ nnoremap <Leader>g :IndentGuidesToggle<CR>
 
 " vim-lightline
 set laststatus=2
+let g:lightline = {'colorscheme': 'one'}
 
 " set j2 files as yaml syntax
 au BufRead,BufNewFile *.yaml,*.yml set filetype=yaml
