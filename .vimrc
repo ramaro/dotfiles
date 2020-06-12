@@ -27,6 +27,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'szw/vim-tags'
 Plug 'leafgarland/typescript-vim'
 Plug 'reedes/vim-colors-pencil'
+Plug 'ap/vim-buftabline'
 
 call plug#end()
 
@@ -45,17 +46,16 @@ syntax enable
 let g:solarized_termcolors=256
 let g:pencil_higher_contrast_ui = 1
 let g:pencil_terminal_italics = 1
-let g:airline_theme = 'pencil'
 
 set background=light
-" colorscheme solarized
-colorscheme pencil
+colorscheme solarized
+" colorscheme pencil
 
 " enable vim-workspace's autosave
 let g:workspace_autosave_always = 1
 
 " enable vim-indent-guides
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
 let g:indent_guides_autocolors = 0
 hi IndentGuidesOdd ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
@@ -132,9 +132,13 @@ nnoremap <Leader>m :BookmarkShowAll<CR>
 nnoremap <Leader>s :ToggleWorkspace<CR>
 nnoremap <Leader>g :IndentGuidesToggle<CR>
 
+" make buffer switching less annoying and faster
+" don't ask to write when switching
+set hidden
+
 " vim-lightline
 set laststatus=2
-let g:lightline = {'colorscheme': 'one'}
+let g:lightline = {'colorscheme': 'solarized'}
 
 " set j2 files as yaml syntax
 au BufRead,BufNewFile *.yaml,*.yml set filetype=yaml
