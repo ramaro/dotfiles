@@ -112,6 +112,42 @@ set wildmenu
 " enable mouse support
 set mouse=a
 
+
+" Strip trailing whitespace in specific filetypes
+autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+
+" Enable spellchecking for Markdown
+autocmd FileType markdown setlocal spell
+
+" yank and paste with the system clipboard
+set clipboard=unnamed
+
+
+" Keep undo history across sessions, by storing in file.
+" Only works all the time.
+if has('persistent_undo')
+  silent !mkdir -p ~/.cache/vim_backups > /dev/null 2>&1
+  set undodir=~/.cache/vim_backups
+  set undofile
+endif
+
+set backupdir=~/.cache/vim_backups/
+
+silent !mkdir -p ~/.cache/vim_backups/view/ > /dev/null 2>&1
+set viewdir=~/.cache/vim_backups/view/
+silent !mkdir -p ~/.cache/vim_backups/swap/ > /dev/null 2>&1
+set directory=~/.cache/vim_backups/swap/
+
+
+if !has('nvim')
+    set viminfo+=n~/.cache/vim_backups/viminfo
+else
+    set viminfo+=n~/.cache/vim_backups/nviminfo
+endif
+
+set history=1000 " Sets how many lines of history VIM has to remember
+
+
 " map leader key to Space
 let mapleader = "\<Space>"
 " wait indefinitely for leader command
