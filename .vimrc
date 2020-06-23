@@ -115,6 +115,12 @@ set mouse=a
 
 " Strip trailing whitespace in specific filetypes
 autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+function! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
 
 " Enable spellchecking for Markdown
 autocmd FileType markdown setlocal spell
