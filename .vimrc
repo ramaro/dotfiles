@@ -2,7 +2,7 @@
 " XXX Run this first
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-" 
+"
 call plug#begin('~/.vim/plugged')
 
 Plug 'itchyny/lightline.vim'
@@ -40,6 +40,9 @@ set list
 " 120 char line
 set colorcolumn=120
 highlight ColorColumn ctermbg=10
+
+" highligh current line
+set cursorline
 
 " color scheme type and settings
 syntax enable
