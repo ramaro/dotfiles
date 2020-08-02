@@ -28,6 +28,8 @@ Plug 'szw/vim-tags'
 Plug 'leafgarland/typescript-vim'
 Plug 'reedes/vim-colors-pencil'
 Plug 'ap/vim-buftabline'
+Plug 'junegunn/vim-peekaboo'
+Plug 'lambdalisue/fern.vim'
 
 call plug#end()
 
@@ -176,6 +178,7 @@ nnoremap <Leader>n :set number!<CR>
 nnoremap <Leader>m :BookmarkShowAll<CR>
 nnoremap <Leader>s :ToggleWorkspace<CR>
 nnoremap <Leader>g :IndentGuidesToggle<CR>
+nnoremap <Leader>e :Fern . -drawer -reveal=%<CR>
 
 " make buffer switching less annoying and faster
 " don't ask to write when switching
