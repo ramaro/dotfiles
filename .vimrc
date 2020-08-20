@@ -69,6 +69,11 @@ hi IndentGuidesEven ctermbg=darkgrey
 let g:vim_tags_auto_generate = 1
 let g:vim_tags_use_vim_dispatch = 1
 
+" vim-go: automatically get signature/type info for object under cursor
+let g:go_auto_type_info = 1
+" vim-go: run goimports along gofmt on each save
+ let g:go_fmt_command = "goimports"
+
 " show line numbers
 set number
 
@@ -196,3 +201,6 @@ autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 " setting for .jsonnet and .libjsonnet syntax
 au BufRead,BufNewFile *.jsonnet,*.libjsonnet set filetype=jsonnet syntax=jsonnet
 autocmd FileType jsonnet setlocal ts=2 sts=2 sw=2 expandtab
+
+" Disable list for go files (tabs!)
+autocmd FileType go set nolist
