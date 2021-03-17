@@ -6,10 +6,9 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'itchyny/lightline.vim'
-Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'fatih/vim-go'
 Plug 'tpope/vim-commentary'
@@ -20,7 +19,6 @@ Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
-Plug 'nvie/vim-flake8'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-dispatch'
@@ -30,6 +28,10 @@ Plug 'reedes/vim-colors-pencil'
 Plug 'ap/vim-buftabline'
 Plug 'junegunn/vim-peekaboo'
 Plug 'lambdalisue/fern.vim'
+Plug 'hashivim/vim-terraform'
+Plug 'dense-analysis/ale'
+Plug 'maximbaz/lightline-ale'
+
 
 call plug#end()
 
@@ -46,15 +48,19 @@ highlight ColorColumn ctermbg=10
 " highligh current line
 set cursorline
 
+" autoread changed files
+set autoread
+au FocusGained,BufEnter * :checktime
+
+
 " color scheme type and settings
 syntax enable
 let g:solarized_termcolors=256
 let g:pencil_higher_contrast_ui = 1
 let g:pencil_terminal_italics = 1
 
-set background=light
-colorscheme solarized
-" colorscheme pencil
+set background=dark
+colorscheme solarized8
 
 " enable vim-workspace's autosave
 let g:workspace_autosave_always = 1
@@ -120,7 +126,7 @@ set incsearch
 set wildmenu
 
 " enable mouse support
-set mouse=a
+" set mouse=a
 
 
 " Strip trailing whitespace in specific filetypes
@@ -136,7 +142,7 @@ endfun
 autocmd FileType markdown setlocal spell
 
 " yank and paste with the system clipboard
-set clipboard=unnamed
+" set clipboard=unnamed
 
 
 " Keep undo history across sessions, by storing in file.
@@ -169,7 +175,7 @@ let mapleader = "\<Space>"
 " wait indefinitely for leader command
 set notimeout nottimeout
 
-nnoremap <Leader>a :Ack 
+nnoremap <Leader>a :Ack
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>b :Buffers<CR>
@@ -184,6 +190,7 @@ nnoremap <Leader>m :BookmarkShowAll<CR>
 nnoremap <Leader>s :ToggleWorkspace<CR>
 nnoremap <Leader>g :IndentGuidesToggle<CR>
 nnoremap <Leader>e :Fern . -drawer -toggle -reveal=%<CR>
+nnoremap <Leader>z :ALENextWrap<CR>
 
 " make buffer switching less annoying and faster
 " don't ask to write when switching
@@ -192,6 +199,25 @@ set hidden
 " vim-lightline
 set laststatus=2
 let g:lightline = {'colorscheme': 'solarized'}
+
+" lightline-ale
+" register components
+let g:lightline.component_expand = {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_infos': 'lightline#ale#infos',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+" set colour
+let g:lightline.component_type = {
+      \     'linter_checking': 'right',
+      \     'linter_infos': 'right',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'right',
+      \ }
+let g:lightline.active = { 'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified' ], [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]] }
 
 " set j2 files as yaml syntax
 au BufRead,BufNewFile *.yaml,*.yml set filetype=yaml
@@ -204,3 +230,39 @@ autocmd FileType jsonnet setlocal ts=2 sts=2 sw=2 expandtab
 
 " Disable list for go files (tabs!)
 autocmd FileType go set nolist
+
+" Terraform vim-terraform settings
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
+
+" Ale
+let g:ale_enabled=1
+let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 1
+set omnifunc=ale#completion#OmniFunc
+
+" custom ale docformatter fixer command
+function PythonDocFormatter(buffer) abort
+    return {
+    \   'command': 'docformatter -'
+    \}
+endfunction
+execute ale#fix#registry#Add('docformatter', 'PythonDocFormatter', ['python'], 'docformatter for python')
+"
+" custom ale doq fixer command
+function PythonDoq(buffer) abort
+    return {
+    \   'command': 'doq --formatter=numpy'
+    \}
+endfunction
+execute ale#fix#registry#Add('doq', 'PythonDoq', ['python'], 'doq for python')
+
+" Ale linters
+" XXX Need pip install black isort docformatter doq pyls pydocstyle flake8
+let g:ale_fixers = {'python': ['black', 'isort', 'docformatter', 'doq'] }
+let g:ale_linters = {'python': ['pyls', 'flake8', 'pydocstyle']}
+let g:ale_fix_on_save = 1
+" force ale to run flake8 with global config
+call ale#Set('python_flake8_options', '--config=$HOME/.config/flake8')
+" set pydocstyle config
+call ale#Set('python_pydocstyle_options', '--convention=numpy --add-ignore=D100,D101,D102,D103,D104,D105,D106,D107,D202')
