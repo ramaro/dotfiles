@@ -259,7 +259,11 @@ execute ale#fix#registry#Add('doq', 'PythonDoq', ['python'], 'doq for python')
 
 " Ale linters
 " XXX Need pip install black isort docformatter doq pyls pydocstyle flake8
-let g:ale_fixers = {'python': ['black', 'isort', 'docformatter', 'doq'] }
+" XXX yamlfix
+let g:ale_fixers = {
+\ 'python': ['black', 'isort', 'docformatter', 'doq'],
+\ 'yaml': ['yamlfix']
+\ }
 let g:ale_linters = {'python': ['pyls', 'flake8', 'pydocstyle']}
 let g:ale_fix_on_save = 1
 " force ale to run flake8 with global config
