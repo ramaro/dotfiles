@@ -179,18 +179,27 @@ nnoremap <Leader>a :Ack
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>T :Tags<CR>
-nnoremap <Leader>t :terminal<CR>
+nnoremap <Leader>t :ALEGoToDefinition<CR>
+nnoremap <Leader>T :terminal<CR>
 nnoremap <Leader>h :bp<CR>
 nnoremap <Leader>l :bn<CR>
 nnoremap <Leader>p :b#<CR>
+nnoremap <Leader>P :set paste!<CR>
 nnoremap <Leader>r :reg<CR>
 nnoremap <Leader>n :set number!<CR>
 nnoremap <Leader>m :BookmarkShowAll<CR>
-nnoremap <Leader>s :ToggleWorkspace<CR>
+nnoremap <Leader>s :ALEFindReferences<CR>
 nnoremap <Leader>g :IndentGuidesToggle<CR>
 nnoremap <Leader>e :Fern . -drawer -toggle -reveal=%<CR>
 nnoremap <Leader>z :ALENextWrap<CR>
+
+" command mode shorcuts
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
 
 " make buffer switching less annoying and faster
 " don't ask to write when switching
