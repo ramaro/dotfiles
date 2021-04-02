@@ -31,6 +31,7 @@ Plug 'lambdalisue/fern.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'dense-analysis/ale'
 Plug 'maximbaz/lightline-ale'
+Plug 'leafOfTree/vim-svelte-plugin'
 
 
 call plug#end()
@@ -237,8 +238,11 @@ autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 au BufRead,BufNewFile *.jsonnet,*.libjsonnet set filetype=jsonnet syntax=jsonnet
 autocmd FileType jsonnet setlocal ts=2 sts=2 sw=2 expandtab
 
-" Disable list for go files (tabs!)
+" Disable list for go, svelte, js files (tabs!)
 autocmd FileType go set nolist
+autocmd FileType svelte set nolist
+autocmd FileType javascript set nolist
+
 
 " Terraform vim-terraform settings
 let g:terraform_align=1
