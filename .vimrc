@@ -9,7 +9,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'fatih/vim-go'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -31,7 +31,9 @@ Plug 'lambdalisue/fern.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'dense-analysis/ale'
 Plug 'maximbaz/lightline-ale'
-
+Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'easymotion/vim-easymotion'
+Plug 'mhinz/vim-startify'
 
 call plug#end()
 
@@ -80,8 +82,9 @@ let g:go_auto_type_info = 1
 " vim-go: run goimports along gofmt on each save
  let g:go_fmt_command = "goimports"
 
-" show line numbers
+" show line numbers and relative
 set number
+set relativenumber
 
 " disable old vi bugs and limitations
 set nocompatible
@@ -186,7 +189,7 @@ nnoremap <Leader>l :bn<CR>
 nnoremap <Leader>p :b#<CR>
 nnoremap <Leader>P :set paste!<CR>
 nnoremap <Leader>r :reg<CR>
-nnoremap <Leader>n :set number!<CR>
+nnoremap <Leader>n :set number! relativenumber!<CR>
 nnoremap <Leader>m :BookmarkShowAll<CR>
 nnoremap <Leader>s :ALEFindReferences<CR>
 nnoremap <Leader>g :IndentGuidesToggle<CR>
@@ -229,8 +232,8 @@ let g:lightline.component_type = {
 let g:lightline.active = { 'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified' ], [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]] }
 
 " set j2 files as yaml syntax
-au BufRead,BufNewFile *.yaml,*.yml set filetype=yaml
-au BufRead,BufNewFile *.j2 set filetype=yaml
+" au BufRead,BufNewFile *.yaml,*.yml set filetype=yaml
+" au BufRead,BufNewFile *.j2 set filetype=yaml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 " setting for .jsonnet and .libjsonnet syntax
@@ -268,14 +271,24 @@ execute ale#fix#registry#Add('doq', 'PythonDoq', ['python'], 'doq for python')
 
 " Ale linters
 " XXX Need pip install black isort docformatter doq pyls pydocstyle flake8
-" XXX yamlfix
+" XXX yamlfix yamllint
+" XXX Note that pyls will find pycodestyle which 
+" XXX defaults to 79chars line length, set to 99 in ~/.config/pycodestyle
 let g:ale_fixers = {
-\ 'python': ['black', 'isort', 'docformatter', 'doq'],
-\ 'yaml': ['yamlfix']
-\ }
-let g:ale_linters = {'python': ['pyls', 'flake8', 'pydocstyle']}
+            \ 'python': ['black', 'isort', 'docformatter', 'doq'],
+            \ 'yaml': ['yamlfix']
+            \ }
+let g:ale_linters = {
+            \'python': ['pyls', 'flake8', 'pydocstyle'],
+            \'yaml': ['yamllint']
+            \}
 let g:ale_fix_on_save = 1
 " force ale to run flake8 with global config
 call ale#Set('python_flake8_options', '--config=$HOME/.config/flake8')
 " set pydocstyle config
-call ale#Set('python_pydocstyle_options', '--convention=numpy --add-ignore=D100,D101,D102,D103,D104,D105,D106,D107,D202')
+call ale#Set('python_pydocstyle_options', '--max-line-length=99 --convention=numpy --add-ignore=D100,D101,D102,D103,D104,D105,D106,D107,D202')
+" set yamllint config file
+let g:ale_yaml_yamllint_options = '-c $HOME/.config/yamllint'
+
+" set python black options
+let g:ale_python_black_options = '--line-length=99'
