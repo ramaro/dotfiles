@@ -19,7 +19,6 @@ paq { 'neovim/nvim-lspconfig' }
 paq { 'hrsh7th/nvim-compe' }
 paq { 'nvim-lua/plenary.nvim'}
 paq { 'nvim-telescope/telescope.nvim' }
-paq { 'lifepillar/vim-solarized8' }
 paq { 'hoob3rt/lualine.nvim' }
 paq { 'kyazdani42/nvim-web-devicons' }   -- Needs patched font (like Hack Nerd) https://www.nerdfonts.com/font-downloads
 paq { 'ryanoasis/vim-devicons' }
@@ -29,19 +28,26 @@ paq { 'phaazon/hop.nvim' }
 paq { 'folke/trouble.nvim' }
 paq { 'onsails/lspkind-nvim' }
 paq { 'kyazdani42/nvim-tree.lua' }
+paq { 'b3nj5m1n/kommentary' }
+paq { 'mhartington/formatter.nvim' }
+paq { 'EdenEast/nightfox.nvim' }
 
 ------- Colours and pretty things -----------
-g.solarized_termcolors = 256
-cmd('colorscheme solarized8')
+g.nightfox_style = "palefox"
+require('nightfox').set()
 
 require('gitsigns').setup{
+  numhl = true,
+  linehl = true,
   current_line_blame = true,
   current_line_blame_delay = 1000,
   current_line_blame_position = 'eol',
 }
 
 require('lualine').setup{
-  theme = 'solarized_dark',
+  options = {
+    theme = "nightfox",
+  },
   sections = {
     lualine_a = {"mode"},
     lualine_b = {"branch", "diff"},
@@ -68,6 +74,44 @@ require("bufferline").setup{
   }
 }
 
+---- Formatter ----
+require('formatter').setup{
+  filetype = {
+    python = {
+       function()
+         return {
+           exe = "black",
+           args = {'-l', '99', '-'},
+           stdin = true
+         }
+       end,
+       function()
+         return {
+           exe = "isort",
+           args = {'-'},
+           stdin = true
+         }
+       end
+    },
+    yaml = {
+      function()
+        return {
+          exe = "yamlfix",
+          args = {'-'},
+          stdin = true
+        }
+      end
+    }
+  }
+}
+-- Format filetypes on save
+vim.api.nvim_exec([[
+augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost *.py,*.yaml,*.yml FormatWrite
+augroup END
+]], true)
+
 
 -------- Globals --------------
 g.mapleader = " "                 -- Set space as leader key
@@ -89,7 +133,6 @@ opt.smartindent = true              -- Insert indents automatically
 opt.splitbelow = true               -- Put new windows below current
 opt.splitright = true               -- Put new windows right of current
 opt.tabstop = 2                     -- Number of spaces tabs count for
--- opt.termguicolors = true            -- True color support
 opt.wildmode = {'list', 'longest'}  -- Command-line completion mod
 
 
@@ -102,22 +145,27 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>=', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-  vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]]  -- PyLSP Format of save
+  -- lsp formatting isn't great or always supported comment for now and use formatter.vim instead
+  --[[ vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>=', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]]  -- PyLSP Format on save ]]
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-lsp.pylsp.setup{    --- Needs pip install pydocstyle python-lsp-server pyls-flake8 python-lsp-black pyls-isort
+lsp.pylsp.setup{    --- Needs pip install pydocstyle python-lsp-server pyls-flake8
   on_attach = on_attach,
   capabilities = capabilities,
+  configurationSources = {'flake8', 'pydocstyle'},  -- respect tool config files
   plugins = {
-    black = { enabled = true },
     flake8 = { enabled = true },
-    isort = { enabled = true },
     pydocstyle = { enabled = true },
   }
+}
+
+lsp.yamlls.setup{  --- Needs yarn install -g yaml-language-server and .yarn/bin in PATH
+  cmd = {'yaml-language-server', '--stdio'},
+  filetypes = { 'yaml', 'yml' },
 }
 
 opt.completeopt = 'menuone,noselect'
@@ -198,7 +246,7 @@ map('n', '<leader>t', ':TroubleToggle<CR>')
 map('n', '<leader>e', ':NvimTreeToggle<CR>')
 
 
--- Map tab to the above tab complete functiones
+-- Map tab to the above tab complete functions
 vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.tab_complete()', { expr = true })
 vim.api.nvim_set_keymap('s', '<Tab>', 'v:lua.tab_complete()', { expr = true })
 vim.api.nvim_set_keymap('i', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
