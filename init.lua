@@ -31,17 +31,25 @@ paq { 'kyazdani42/nvim-tree.lua' }
 paq { 'b3nj5m1n/kommentary' }
 paq { 'mhartington/formatter.nvim' }
 paq { 'EdenEast/nightfox.nvim' }
+paq { 'ThePrimeagen/git-worktree.nvim' }
+paq { 'TimUntersberger/neogit' }
+paq { 'sindrets/diffview.nvim' }
 
 ------- Colours and pretty things -----------
-g.nightfox_style = "palefox"
-require('nightfox').set()
+require('nightfox').load()
+require('nightfox').setup({
+  fox = "palefox",
+})
+
+require('git-worktree').setup()
+require("telescope").load_extension("git_worktree")
+require('neogit').setup()
 
 require('gitsigns').setup{
   numhl = true,
   linehl = true,
   current_line_blame = true,
-  current_line_blame_delay = 1000,
-  current_line_blame_position = 'eol',
+  current_line_blame_opts = { delay = 1000, position = 'rightalign' },
 }
 
 require('lualine').setup{
@@ -115,6 +123,7 @@ augroup END
 
 -------- Globals --------------
 g.mapleader = " "                 -- Set space as leader key
+g.nvim_tree_highlight_opened_files = 1  -- Highlight opened files in VimTree
 
 -------- Options --------------
 opt.expandtab = true                -- Use spaces instead of tabs
@@ -166,6 +175,11 @@ lsp.pylsp.setup{    --- Needs pip install pydocstyle python-lsp-server pyls-flak
 lsp.yamlls.setup{  --- Needs yarn install -g yaml-language-server and .yarn/bin in PATH
   cmd = {'yaml-language-server', '--stdio'},
   filetypes = { 'yaml', 'yml' },
+}
+
+cmd("au BufRead,BufNewFile Dockerfile,Dockerfile.local set filetype=dockerfile")
+lsp.dockerls.setup{
+  filetypes = { "Dockerfile", "Dockerfile.local", "dockerfile" },
 }
 
 opt.completeopt = 'menuone,noselect'
@@ -239,11 +253,22 @@ map('n', '<leader>h', ':bp<CR>')
 map('n', '<leader>l', ':bn<CR>')
 map('n', '<leader>p', ':b#<CR>')
 map('n', '<leader>f', ':Telescope find_files<CR>')
-map('n', '<leader>b', ':Telescope buffers<CR>')
+map('n', '<leader>fg', ':Telescope live_grep<CR>')  -- needs ripgrep
+map('n', '<leader>bf', ':Telescope buffers<CR>')
+map('n', '<leader>bd', ':bd<CR>')
+map('n', '<leader>gs', ':Telescope git_status<CR>')
+map('n', '<leader>gl', ':Telescope git_commits<CR>')
+map('n', '<leader>gg', ':Neogit<CR>')
+map('n', '<leader>gd', ':DiffviewOpen master<CR>')
+map('n', '<leader>gw', ":lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
+map('n', '<leader>gn', ":lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
 map('n', '<leader>/', ':HopPattern<CR>')
 map('n', '<leader>j', ':HopWord<CR>')
 map('n', '<leader>t', ':TroubleToggle<CR>')
 map('n', '<leader>e', ':NvimTreeToggle<CR>')
+map('n', '<leader>kc', ':!kapitan compile<CR>')
+map('n', '<leader>vl', ':so ~/.config/nvim/init.lua<CR>')
+map('n', '<leader>ve', ':e ~/.config/nvim/init.lua<CR>')
 
 
 -- Map tab to the above tab complete functions
