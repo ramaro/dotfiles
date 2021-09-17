@@ -19,6 +19,7 @@ paq { 'neovim/nvim-lspconfig' }
 paq { 'hrsh7th/nvim-compe' }
 paq { 'nvim-lua/plenary.nvim'}
 paq { 'nvim-telescope/telescope.nvim' }
+paq { 'nvim-telescope/telescope-fzy-native.nvim' }
 paq { 'hoob3rt/lualine.nvim' }
 paq { 'kyazdani42/nvim-web-devicons' }   -- Needs patched font (like Hack Nerd) https://www.nerdfonts.com/font-downloads
 paq { 'ryanoasis/vim-devicons' }
@@ -27,22 +28,26 @@ paq { 'lewis6991/gitsigns.nvim' }
 paq { 'phaazon/hop.nvim' }
 paq { 'folke/trouble.nvim' }
 paq { 'onsails/lspkind-nvim' }
-paq { 'kyazdani42/nvim-tree.lua' }
+-- paq { 'kyazdani42/nvim-tree.lua' }
 paq { 'b3nj5m1n/kommentary' }
 paq { 'mhartington/formatter.nvim' }
-paq { 'EdenEast/nightfox.nvim' }
+-- paq { 'EdenEast/nightfox.nvim' }
+paq { 'folke/tokyonight.nvim' }
 paq { 'ThePrimeagen/git-worktree.nvim' }
 paq { 'TimUntersberger/neogit' }
 paq { 'sindrets/diffview.nvim' }
+paq { 'mhinz/vim-startify' }
 
 ------- Colours and pretty things -----------
-require('nightfox').load()
+--[[ require('nightfox').load()
 require('nightfox').setup({
   fox = "palefox",
-})
+}) ]]
+cmd("colorscheme tokyonight")
 
-require('git-worktree').setup()
+require('telescope').setup()
 require("telescope").load_extension("git_worktree")
+require("telescope").load_extension("fzy_native")
 require('neogit').setup()
 
 require('gitsigns').setup{
@@ -54,7 +59,8 @@ require('gitsigns').setup{
 
 require('lualine').setup{
   options = {
-    theme = "nightfox",
+    -- theme = "nightfox",
+    theme = "tokyonight",
   },
   sections = {
     lualine_a = {"mode"},
@@ -123,7 +129,6 @@ augroup END
 
 -------- Globals --------------
 g.mapleader = " "                 -- Set space as leader key
-g.nvim_tree_highlight_opened_files = 1  -- Highlight opened files in VimTree
 
 -------- Options --------------
 opt.expandtab = true                -- Use spaces instead of tabs
@@ -252,20 +257,23 @@ map('n', '<leader>w', ':w<CR>')
 map('n', '<leader>h', ':bp<CR>')
 map('n', '<leader>l', ':bn<CR>')
 map('n', '<leader>p', ':b#<CR>')
-map('n', '<leader>f', ':Telescope find_files<CR>')
-map('n', '<leader>fg', ':Telescope live_grep<CR>')  -- needs ripgrep
+map('n', '<leader>ff', ':Telescope find_files<CR>')
+map('n', '<leader>fg', ':Telescope live_grep<CR>')
+map('n', '<leader>fs', ':Telescope grep_string<CR>')  -- needs ripgrep
+map('n', '<leader>fb', ':Telescope file_browser<CR>')
 map('n', '<leader>bf', ':Telescope buffers<CR>')
 map('n', '<leader>bd', ':bd<CR>')
 map('n', '<leader>gs', ':Telescope git_status<CR>')
 map('n', '<leader>gl', ':Telescope git_commits<CR>')
+map('n', '<leader>gb', ':Telescope git_branches<CR>')
 map('n', '<leader>gg', ':Neogit<CR>')
+map('n', '<leader>gr', ':!git rebase ')
 map('n', '<leader>gd', ':DiffviewOpen master<CR>')
 map('n', '<leader>gw', ":lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
 map('n', '<leader>gn', ":lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>")
 map('n', '<leader>/', ':HopPattern<CR>')
 map('n', '<leader>j', ':HopWord<CR>')
 map('n', '<leader>t', ':TroubleToggle<CR>')
-map('n', '<leader>e', ':NvimTreeToggle<CR>')
 map('n', '<leader>kc', ':!kapitan compile<CR>')
 map('n', '<leader>vl', ':so ~/.config/nvim/init.lua<CR>')
 map('n', '<leader>ve', ':e ~/.config/nvim/init.lua<CR>')
